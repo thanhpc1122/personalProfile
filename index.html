@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ Khoa học Dữ liệu - Nguyễn Tấn Thành</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        :root {
+            --background-color: #0c0d12;
+            --primary-color: #58a6ff;
+            --secondary-color: #21262d;
+            --text-color-primary: #e6edf3;
+            --text-color-secondary: #7d8590;
+            --border-color: #30363d;
+            --card-background: #161b22;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color-secondary);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            position: relative;
+        }
+
+        /* --- Hiệu ứng nền động độc đáo --- */
+        .background-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .profile-container {
+            width: 95%;
+            max-width: 1200px;
+            height: 90%;
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .profile-container:hover {
+            box-shadow: 0 15px 40px rgba(88, 166, 255, 0.15);
+        }
+
+        /* --- Phần Header & Ảnh đại diện --- */
+        .header-section {
+            display: flex;
+            align-items: center;
+            padding: 2rem 4rem;
+            position: relative;
+            background: linear-gradient(135deg, #1a2a3a 0%, #111e2f 100%);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 767px) {
+            .header-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+        
+        .profile-picture-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), #4092f3);
+            padding: 5px;
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.4);
+            transition: all 0.4s ease-in-out;
+        }
+
+        .profile-picture {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--card-background);
+            cursor: pointer;
+        }
+
+        .logo-school {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            bottom: -15px;
+            right: -15px;
+            border-radius: 50%;
+            background: var(--card-background);
+            padding: 6px;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-school img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+
+        .header-main-info {
+            flex-grow: 1;
+        }
+        
+        .header-main-info h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-color-primary);
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header-main-info p {
+            font-size: 1.15rem;
+            color: var(--text-color-secondary);
+            font-style: italic;
+        }
+
+        .intro-text-container {
+            flex-grow: 1;
+            padding-left: 2rem;
+            border-left: 1px solid var(--border-color);
+        }
+        
+        @media (max-width: 767px) {
+            .intro-text-container {
+                padding-left: 0;
+                border-left: none;
+                margin-top: 1rem;
+            }
+        }
+        
+        .intro-text {
+            font-size: 1rem;
+            color: var(--text-color-primary);
+            line-height: 1.6;
+        }
+
+        /* --- Nội dung chính --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem 4rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        @media (min-width: 1024px) {
+            .main-content {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .section-card {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(88, 166, 255, 0.1);
+        }
+
+        .section-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1rem;
+        }
+
+        .section-card ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .section-card li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-color-primary);
+            font-size: 1rem;
+        }
+
+        .section-card li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.5rem;
+            line-height: 1;
+            color: var(--primary-color);
+        }
+
+        .section-card li .sub-list {
+            margin-top: 0.25rem;
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-color-secondary);
+        }
+
+        .section-card .highlight {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .section-card .promise-list li::before {
+            content: "✓";
+            color: #34d399;
+        }
+
+        /* --- CSS cho Modal (Pop-up) --- */
+        .modal {
+            display: none; /* Ẩn theo mặc định */
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            display: none; /* Ẩn ảnh theo mặc định để đợi tải xong */
+            margin: auto;
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.3);
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        .modal-loading, .modal-error {
+            color: white;
+            font-size: 1.25rem;
+            text-align: center;
+        }
+
+        @keyframes zoom {
+            from {transform: scale(0.1)}
+            to {transform: scale(1)}
+        }
+    </style>
+</head>
+<body>
+    <canvas id="background-canvas" class="background-canvas"></canvas>
+
+    <div class="profile-container">
+        <!-- Phần Header với ảnh đại diện và thông tin cơ bản -->
+        <div class="header-section">
+            <div class="profile-picture-container">
+                <!-- Chú thích: Thay đổi đường dẫn ảnh cá nhân của bạn tại đây -->
+                <a href="avata.png"> <img src="avata.png" alt="Ảnh đại diện" class="profile-picture" id="profile-picture"> </a>
+                <div class="logo-school">
+                    <!-- Chú thích: Thay đổi đường dẫn logo trường tại đây -->
+                    <a href="logo.png"> <img src="logo.png" alt="Logo Trường"> </a>
+                </div>
+            </div>
+            <div class="header-main-info">
+                <h1>NGUYỄN TẤN THÀNH</h1>
+                <p>Sinh viên năm nhất - Khoa Khoa học Dữ liệu</p>
+            </div>
+            <div class="intro-text-container">
+                 <p class="intro-text">Chào các bạn, mình là Nguyễn Tấn Thành. Rất vui được giới thiệu với các bạn về bản thân và những kinh nghiệm mình có.</p>
+            </div>
+        </div>
+
+        <!-- Phần nội dung chính với các thẻ chi tiết -->
+        <div class="main-content">
+            <!-- Thẻ Thành tích, Kỹ năng & Kinh nghiệm -->
+            <div class="section-card">
+                <h3>Thành tích, Kỹ năng & Kinh nghiệm</h3>
+                <ul>
+                    <li>Lúc trước mình học trường THPT TX Phước Long.</li>
+                    <li>
+                        Điểm các môn cụ thể:
+                        <ul class="sub-list">
+                            <li><span class="highlight">Lớp 10:</span> Toán 6.7, Lý 8.2, Hóa 8.7</li>
+                            <li><span class="highlight">Lớp 11:</span> Toán 8.7, Lý 8.3, Hóa 8.3</li>
+                            <li><span class="highlight">Lớp 12:</span> Toán 9.0, Lý 9.0, Hóa 8.3</li>
+                        </ul>
+                    </li>
+                    <li>Đạt <span class="highlight">Huy chương Đồng</span> cuộc thi Olympic 19/5.</li>
+                    <li>Thành thạo cơ bản <span class="highlight">Git và GitHub</span> cá nhân.</li>
+                    <li>Có kinh nghiệm làm việc nhóm với <span class="highlight">Git cơ bản</span>.</li>
+                    <li>Có khả năng lập trình tốt trên các ngôn ngữ như <span class="highlight">C++ và Python</span> (thành thạo ở mức làm được bài tập code thi đấu trên các ngôn ngữ đó).</li>
+                </ul>
+            </div>
+            
+            <!-- Thẻ Năng lực & Điểm yếu -->
+            <div class="section-card">
+                <h3>Năng lực & Điểm yếu</h3>
+                <ul>
+                    <li><span class="highlight">Điểm mạnh:</span> Có thế mạnh về tư duy logic và khả năng tiếp thu kiến thức nhanh qua các ví dụ thực tế.</li>
+                    <li><span class="highlight">Điểm yếu:</span> Kỹ năng giao tiếp còn kém, khá dở các môn liên quan đến văn học.</li>
+                    <li>Về IELTS, mình đang học tại trung tâm TIW và mình sẽ cố gắng cải thiện nó trong thời gian sớm nhất.</li>
+                </ul>
+            </div>
+
+            <!-- Thẻ Lời hứa chân thành -->
+            <div class="section-card col-span-1 lg:col-span-2">
+                <h3>Lời hứa chân thành</h3>
+                <p class="mb-4">Nếu được tin tưởng bầu chọn mình làm Lớp phó học tập, mình hứa sẽ mang đến những giá trị và kế hoạch hành động cụ thể sau:</p>
+                <ul class="promise-list">
+                    <li>Hoàn thành tốt mọi nhiệm vụ học tập do cố vấn và ban cán sự giao phó.</li>
+                    <li>Chủ động chia sẻ và học hỏi, hỗ trợ, giải đáp thắc mắc bài học và kết nối các bạn với nguồn tài liệu, thầy cô khi cần (Đây cũng là phần mình tâm đắc nhất).</li>
+                    <li>Truyền đạt nhanh chóng, chính xác thông tin học tập (lịch thi, tài liệu) từ nhà trường, thầy cô đến các bạn.</li>
+                    <li>Đảm bảo một môi trường học tập công bằng, khách quan cho mọi thành viên trong lớp.</li>
+                    <li>Phối hợp tổ chức các hoạt động học tập bổ ích (nhóm, ôn tập).</li>
+                    <li>Định hướng và cùng lớp nỗ lực để đạt được thành tích học tập tốt nhất, góp phần "kéo lớp đi lên" trong học tập.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal (Pop-up) -->
+    <div id="image-modal" class="modal">
+        <span class="modal-loading">Đang tải ảnh...</span>
+        <!-- Chú thích: Thay đổi đường dẫn ảnh gốc hình chữ nhật tại đây -->
+        <img class="modal-content" id="modal-image" src="uploaded:image_57591c.png-2f1a46ca-5ec6-41e0-a053-b3e32b606611">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Phần code cho hiệu ứng nền động (không thay đổi)
+            const canvas = document.getElementById('background-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            const particles = [];
+            const particleCount = 200;
+            const maxRadius = 1.5;
+            const minRadius = 0.5;
+
+            function resizeCanvas() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.radius = Math.random() * (maxRadius - minRadius) + minRadius;
+                    this.color = `rgba(88, 166, 255, ${Math.random() * 0.5 + 0.1})`;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x > width || this.x < 0) this.speedX *= -1;
+                    if (this.y > height || this.y < 0) this.speedY *= -1;
+                }
+            }
+
+            function initParticles() {
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle());
+                }
+            }
+            function animateParticles() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                    for (let j = i; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < 100) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(88, 166, 255, ${1 - distance / 100})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animateParticles);
+            }
+            initParticles();
+            animateParticles();
+
+            // --- Phần code JavaScript đã được sửa để xử lý Pop-up ---
+            const modal = document.getElementById('image-modal');
+            const profilePicture = document.getElementById('profile-picture');
+            const modalImage = document.getElementById('modal-image');
+            const modalLoading = document.querySelector('.modal-loading');
+
+            // Mở modal và hiển thị ảnh khi click vào ảnh đại diện
+            profilePicture.onclick = function() {
+                // Hiển thị modal và thông báo đang tải
+                modal.style.display = "flex";
+                modalLoading.style.display = "block";
+                modalImage.style.display = "none";
+
+                // Sử dụng sự kiện onload để chỉ hiển thị ảnh sau khi đã tải xong
+                modalImage.onload = function() {
+                    modalLoading.style.display = "none";
+                    modalImage.style.display = "block";
+                };
+
+                // Xử lý khi ảnh bị lỗi (không tải được)
+                modalImage.onerror = function() {
+                    modalLoading.style.display = "none";
+                    modal.innerHTML = '<span class="modal-error">Tải ảnh không thành công. Vui lòng thử lại.</span>';
+                };
+            }
+
+            // Đóng modal khi click ra ngoài
+            modal.onclick = function(event) {
+                if (event.target === modal || event.target.tagName.toLowerCase() === 'span') {
+                    modal.style.display = "none";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
